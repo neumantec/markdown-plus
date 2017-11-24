@@ -66,7 +66,7 @@ editor.on('scroll', (instance) => {
 
 // custom keyboard shortcuts
 const extraKeys = { 'Alt-F': 'findPersistent' }
-const items = [[`${ctrl}-B`, 'i.fa-bold'], [`${ctrl}-I`, 'i.fa-italic'], [`${ctrl}-U`, 'i.fa-underline'], [`${ctrl}-,`, 'i.fa-cog']]
+const items = [[`${ctrl}-B`, 'i.fa-bold'], [`${ctrl}-I`, 'i.fa-italic'], [`${ctrl}-U`, 'i.fa-underline'], [`${ctrl}-,`, 'i.fa-cog'], [`${ctrl}-S`, '#save-file-icon']];
 items.forEach((item) => {
   extraKeys[item[0]] = (cm) => {
     document.querySelector(item[1]).click()

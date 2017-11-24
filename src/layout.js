@@ -10,7 +10,7 @@ const layout = $('#mdp-container').layout({ // create 3-panels layout
   north: {
     togglerLength_open: 128,
     togglerLength_closed: 128,
-    size: 22,
+    size: 25,
     togglerTip_open: 'Hide toolbar',
     togglerTip_closed: 'Show toolbar',
     onopen: () => {
@@ -29,6 +29,14 @@ const layout = $('#mdp-container').layout({ // create 3-panels layout
       editor.focus()
       $('article#preview').css('padding-bottom', ($('.ui-layout-east').height() - parseInt($('article#preview').css('line-height'), 10) + 1) + 'px') // scroll past end
     }
+  },
+  
+  west: {
+    togglerLength_open: 128,
+    togglerLength_closed: 128,
+    size: 100,
+    togglerTip_open: 'Hide File List',
+    togglerTip_closed: 'Show File List'
   }
 })
 

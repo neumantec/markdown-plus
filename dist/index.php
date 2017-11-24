@@ -1,20 +1,30 @@
+<?php ?>
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Markdown Plus</title>
+    <title>Markdown Plus Based Requirements Manager</title>
     <link href="icon.png" rel="shortcut icon" type="image/png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.layout/1.4.3/layout-default.css">
     <link rel="stylesheet" href="index.bundle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal-default-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.2/noty.css" />
   </head>
   <body>
     <div id="mdp-container" style="height: 99%;">
       <div class="ui-layout-north">
         <div id="toolbar" class="noselect">
+          <i title="New Document" class="fa fa-file" id='new-file-icon' data-modifier="**"></i>
+          <i title="Open Document" class="fa fa-folder-open" data-remodal-target="file-open-modal"></i>
+          <i title="Save Document" class="fa fa-save" id='save-file-icon' data-modifier="**"></i>
+          <i title="Save Document As" class="fa fa-files-o" data-remodal-target="file-save-modal"></i>
+          <i title="Reload Document" class="fa fa-repeat" id='reload-file-icon'></i>
+          <i class="dividor">|</i>
           <i title="Bold" class="fa fa-bold styling-icon" data-modifier="**"></i>
           <i title="Italic" class="fa fa-italic styling-icon" data-modifier="*"></i>
           <i title="Strikethrough" class="fa fa-strikethrough styling-icon" data-modifier="~~"></i>
@@ -72,6 +82,25 @@ T3: 2014-01-02, 9d"></i>
       </div>
       <div class="ui-layout-center">
         <textarea id="editor"></textarea> <!-- editor -->
+        
+        <div class="remodal" id="file-open-modal" data-remodal-id="file-open-modal"> <!-- file-open modal -->
+          <h2>Please enter an existing file name:</h2>
+          <p>Filename that you previously saved and want to load back ...</p>
+          
+          <p><input class="form-control" id="file-open-code" placeholder="Enter Filename.md"/></p>
+          <br/><a data-remodal-action="cancel" class="remodal-cancel">Cancel</a>
+          <a data-remodal-action="confirm" class="remodal-confirm" id="file-open-confirm">OK</a>
+        </div>
+        
+        <div class="remodal" id="file-save-modal" data-remodal-id="file-save-modal"> <!-- file-save modal -->
+          <h2>Please enter a file name:</h2>
+          <p>Something U can remember and load back later ...</p>
+          
+          <p><input class="form-control" id="file-save-code" placeholder="Enter Filename.md"/></p>
+          <br/><a data-remodal-action="cancel" class="remodal-cancel">Cancel</a>
+          <a data-remodal-action="confirm" class="remodal-confirm" id="file-save-confirm">OK</a>
+        </div>
+        
         <div class="remodal" id="emoji-modal" data-remodal-id="emoji-modal"> <!-- emoji modal -->
           <h2>Please enter an emoji code:</h2>
           <p>Examples: "smile", "whale", "santa", "panda_face", "dog", "truck" ...</p>
@@ -196,10 +225,30 @@ T3: 2014-01-02, 9d"></i>
       <div class="ui-layout-east">
         <article class="markdown-body" id="preview"></article>
       </div>
+      <div class="ui-layout-west">
+        <div class='file-header'>List of Files</div>
+        <div class="ui-layout-content">
+          <div id="file-list" class="noselect">
+            <?php 
+              $directory = './saved';
+              $scanned_directory = array_diff(scandir($directory), array('..', '.'));
+              foreach ($scanned_directory as $file) { 
+            ?>
+              <div class="p-all-2">
+                <div class='file-item' data-file-name="<?=$file?>">
+                  <i title="<?=$file?>" class="fa fa-file"></i>
+                  <div class="file-name"><?=$file?></div>
+                </div>
+              </div>
+            <?php } ?>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="index.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.layout/1.4.3/jquery.layout.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script> <!-- Used by Noty for animation -->
   </body>
 </html>

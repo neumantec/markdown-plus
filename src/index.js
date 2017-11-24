@@ -1,13 +1,17 @@
 import $ from 'jquery'
+import Noty from 'noty'
+
 window.$ = window.jQuery = $
+
 
 // load sample text and get anchor links correct
 $(() => {
   const editor = require('./editor').default
   require('./init')
   require('./preferences')
-  $.get('sample.md', (data) => {
+  $.get('template.md', (data) => {
     editor.setValue(data)
+    window.fileName = 'template.md';
     setTimeout(() => {
       // a little gap to top
       window.addEventListener('hashchange', () => {

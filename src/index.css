@@ -4,7 +4,6 @@ html, body, .CodeMirror {
   height:100%;
 }
 
-
 .ui-layout-pane {
   border-width: 0;
   padding: 0;
@@ -17,7 +16,6 @@ html, body, .CodeMirror {
   background: #ddd; /* same color as non-hover */
 }
 
-
 #toolbar {
   padding-left: 16px;
   color: #666;
@@ -25,6 +23,7 @@ html, body, .CodeMirror {
 #toolbar .fa {
   padding: 2px;
   border: 1px solid transparent;
+  color: #227a5f;
 }
 #toolbar .icon {
   padding: 0 2px;
@@ -36,6 +35,50 @@ html, body, .CodeMirror {
   cursor: pointer;
 }
 
+#file-list {
+  color: #666;
+  text-align: center;
+}
+
+.file-header {
+  color: #666;
+  text-align: center;
+  padding: 2px;
+  font-size: 0.6em;
+  font-weight: bold;
+  background-color: #dddddd;
+  border-style: outset;
+  border-width: 1px;
+}
+
+#file-list .file-item {
+    padding: 2px;
+    border-style: outset;
+    border-width: 1px;
+    margin-bottom: 1px;
+}
+
+#file-list .file-item .fa {
+  font-size: 24px;
+}
+
+#file-list .file-item .file-name{
+    padding: 5px;
+    font-size: 0.6em;
+    background-color: rgb(243, 243, 243);
+    margin-top: 5px;
+    word-break: break-all;
+}
+
+#file-list .file-item:hover, #file-list .icon:hover {
+  background-color: #ddd;
+  border-color: #ccc;
+  cursor: pointer;
+}
+
+.p-all-2 {
+  padding: 2px;
+}
 
 #editor {
   position: absolute;
@@ -103,7 +146,7 @@ html, body, .CodeMirror {
 /*************************/
 
 @media print {
-  .ui-layout-pane-north, .ui-layout-pane-center, .ui-layout-resizer, .ui-layout-toggler {
+  .ui-layout-pane-north, .ui-layout-pane-center, .ui-layout-resizer, .ui-layout-toggler, .ui-layout-pane-west {
     display: none !important;
   }
 }

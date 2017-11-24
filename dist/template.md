@@ -1,4 +1,4 @@
-# Markdown Plus
+# Markdown Plus Template
 
 Markdown Plus ("M+" or "mdp" for short) is a markdown editor with extra features.
 

@@ -6,6 +6,9 @@ import editor from './editor'
 import { lazyChange, lazyResize } from './util'
 import { registerToolBarEvents } from './toolbar'
 
+import NotyPopup from './noty_popups'
+
+window.NotyPopup = NotyPopup;
 // modals
 $(document).on('closed', '.remodal', (e) => {
   editor.focus()
