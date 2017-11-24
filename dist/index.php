@@ -277,27 +277,6 @@ T3: 2014-01-02, 9d"></i>
         });
         
         $(() => {
-            window.addEventListener = function(el, eventName, handler) {
-              if (el.addEventListener) {
-                el.addEventListener(eventName, handler);
-              } else {
-                el.attachEvent('on' + eventName, function() {
-                  handler.call(el);
-                });
-              }
-            };
-            
-            window.triggerEvent = function(el, eventName, options) {
-              var event;
-              if (window.CustomEvent) {
-                event = new CustomEvent(eventName, options);
-              } else {
-                event = document.createEvent('CustomEvent');
-                event.initCustomEvent(eventName, true, true, options);
-              }
-              el.dispatchEvent(event);
-            };
-        
             var filesListApp = new Vue({
                 el : '#file-list',
                 data: function(){
@@ -325,9 +304,9 @@ T3: 2014-01-02, 9d"></i>
             });
             
             // Add an event listener.
-            addEventListener(document, 'data-refresh-event', function(e) {
+            document.addEventListener('data-refresh-event', function (e) {
                 filesListApp.fetch();
-            });
+            }, false);
         })
         
     </script>

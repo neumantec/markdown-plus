@@ -158,7 +158,8 @@ const registerToolBarEvents = () => {
 				//console.log( data ); // John
 				NotyPopup.success(`Successfully saved file (${window.fileName})`);
 				// Trigger the event.
-				triggerEvent(document, 'data-refresh-event', {});
+				//triggerEvent(document, 'data-refresh-event', {});
+				document.dispatchEvent(new Event('data-refresh-event'));
 			},
 			"json"
 		).fail(() => {
@@ -218,7 +219,8 @@ const registerToolBarEvents = () => {
 				window.fileName = `${value}`; // save the filename
 				NotyPopup.success(`<strong>Successfully saved file : ${value}</strong>`);
 				// Trigger the event.
-				triggerEvent(document, 'data-refresh-event', {});
+				//triggerEvent(document, 'data-refresh-event', {});
+				document.dispatchEvent(new Event('data-refresh-event'));
 			}, 
 			"json"
 		).fail(( jqXHR, textStatus, errorThrown) => {
