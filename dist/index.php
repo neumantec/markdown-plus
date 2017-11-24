@@ -19,7 +19,7 @@
     <div id="mdp-container" style="height: 99%;">
       <div class="ui-layout-north">
         <div id="toolbar" class="noselect">
-          <i title="New Document" class="fa fa-file" id='new-file-icon' data-modifier="**"></i>
+          <i title="New Document" class="fa fa-file" id='new-file-icon' data-remodal-target="file-new-modal"></i>
           <i title="Open Document" class="fa fa-folder-open" data-remodal-target="file-open-modal"></i>
           <i title="Save Document" class="fa fa-save" id='save-file-icon' data-modifier="**"></i>
           <i title="Save Document As" class="fa fa-files-o" data-remodal-target="file-save-modal"></i>
@@ -90,6 +90,15 @@ T3: 2014-01-02, 9d"></i>
           <p><input class="form-control" id="file-open-code" placeholder="Enter Filename.md"/></p>
           <br/><a data-remodal-action="cancel" class="remodal-cancel">Cancel</a>
           <a data-remodal-action="confirm" class="remodal-confirm" id="file-open-confirm">OK</a>
+        </div>
+        
+        <div class="remodal" id="file-new-modal" data-remodal-id="file-new-modal"> <!-- file-save modal -->
+          <h2>Please enter a file name:</h2>
+          <p>Something U can remember and load back later ...</p>
+          
+          <p><input class="form-control" id="file-new-code" placeholder="Enter Filename.md"/></p>
+          <br/><a data-remodal-action="cancel" class="remodal-cancel">Cancel</a>
+          <a data-remodal-action="confirm" class="remodal-confirm" id="file-new-confirm">OK</a>
         </div>
         
         <div class="remodal" id="file-save-modal" data-remodal-id="file-save-modal"> <!-- file-save modal -->
@@ -229,6 +238,8 @@ T3: 2014-01-02, 9d"></i>
         <div class='file-header'>List of Files</div>
         <div class="ui-layout-content">
           <div id="file-list" class="noselect">
+              <file-entry v-for="file in files" v-bind:file="file"></file-entry>
+          <?php /* ?>
             <?php 
               $directory = './saved';
               $scanned_directory = array_diff(scandir($directory), array('..', '.'));
@@ -241,6 +252,7 @@ T3: 2014-01-02, 9d"></i>
                 </div>
               </div>
             <?php } ?>
+            <?php */ ?>
           </div>
         </div>
       </div>
@@ -250,5 +262,74 @@ T3: 2014-01-02, 9d"></i>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.layout/1.4.3/jquery.layout.min.js"></script>
     <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script> <!-- Used by Noty for animation -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('file-entry', {
+           props: ['file'],
+           template: `
+               <div class="p-all-2">
+                <div class='file-item' :data-file-name="file">
+                    <i :title="file" class="fa fa-file"></i>
+                    <div class="file-name">{{ file }}</div>
+                </div>
+              </div>
+           `
+        });
+        
+        $(() => {
+            window.addEventListener = function(el, eventName, handler) {
+              if (el.addEventListener) {
+                el.addEventListener(eventName, handler);
+              } else {
+                el.attachEvent('on' + eventName, function() {
+                  handler.call(el);
+                });
+              }
+            };
+            
+            window.triggerEvent = function(el, eventName, options) {
+              var event;
+              if (window.CustomEvent) {
+                event = new CustomEvent(eventName, options);
+              } else {
+                event = document.createEvent('CustomEvent');
+                event.initCustomEvent(eventName, true, true, options);
+              }
+              el.dispatchEvent(event);
+            };
+        
+            var filesListApp = new Vue({
+                el : '#file-list',
+                data: function(){
+                    return {
+                        files : [],//['a.md', 'b.md', 'c.md'];
+                        endpoint: 'file.php'
+                    };
+                },
+    			
+    			created: function () {
+    			    // `this` points to the vm instance
+    			    this.fetch();
+    			},
+    			
+    			methods: {
+    		        fetch: function() {
+    		            $.get(this.endpoint, (data) => {
+    		                this.files = data;
+    		            })
+    		            .fail(() => {
+                			NotyPopup.error(`<strong>Failed to load files list!</strong>`);
+                		});
+    		        }
+    		    }
+            });
+            
+            // Add an event listener.
+            addEventListener(document, 'data-refresh-event', function(e) {
+                filesListApp.fetch();
+            });
+        })
+        
+    </script>
   </body>
 </html>

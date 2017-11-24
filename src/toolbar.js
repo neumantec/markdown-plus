@@ -33,7 +33,7 @@ const promptForValue = (key, action) => {
 
 const loadFile = (value) => {
 
-	if (value.length > 0) {
+	if (value && value.length > 0) {
 		if(!value.startsWith('saved/')) 
 			value = `saved/${value}`;
 
@@ -127,16 +127,20 @@ const registerToolBarEvents = () => {
 		editor.focus()
 	})
 	
+	/*
+	
 	$('#new-file-icon').click((event) => {
-		$.get(`saved\template.md`, (data) => {
+		$.get(`saved/template.md`, (data) => {
 			editor.setValue(data)
-			window.fileName = `saved\template.md`; // save the filename
+			window.fileName = `saved/template.md`; // save the filename
 			editor.focus();
 			NotyPopup.success(`New File created based on template.md.<br/><br/>Please don't forget to use Save Document As (<i class="fa fa-files-o"></i>) to specify a new file name`);
 		}).fail(() => {
 			NotyPopup.error(`<strong>Failed to create a New File!</strong>`);
 		})
 	})
+	
+	*/
 	
 	$('#reload-file-icon').click((event) => {
 		editor.setValue('Reloading File....Please Wait');
@@ -153,6 +157,8 @@ const registerToolBarEvents = () => {
 			( data ) => {
 				//console.log( data ); // John
 				NotyPopup.success(`Successfully saved file (${window.fileName})`);
+				// Trigger the event.
+				triggerEvent(document, 'data-refresh-event', {});
 			},
 			"json"
 		).fail(() => {
@@ -176,6 +182,24 @@ const registerToolBarEvents = () => {
 		editor.replaceSelection(`:fa-${value}:`)
 	})
 	
+	// file-new icon
+	promptForValue('file-new', (value) => {
+		//editor.replaceSelection(`### Trying to save file ${value}:`)
+		editor.setValue('Creating new File based on the default template... Please Wait!!!' );
+		
+		if(!value.startsWith('saved/')) 
+			value = `saved/${value}`;
+		
+		$.get(`template.md`, (data) => {
+			editor.setValue(data)
+			window.fileName = value; // save the filename
+			editor.focus();
+			NotyPopup.success(`New File created based on template.md.`);
+		}).fail(() => {
+			NotyPopup.error(`<strong>Failed to create a New File!</strong>`);
+		});
+	});
+	
 	// file-save icon
 	promptForValue('file-save', (value) => {
 		//editor.replaceSelection(`### Trying to save file ${value}:`)
@@ -183,7 +207,7 @@ const registerToolBarEvents = () => {
 		if(!value.startsWith('saved/')) 
 			value = `saved/${value}`;
 		
-		$.post( 
+		$.post(
 			"file.php",
 			JSON.stringify({
 				'filename' : `${value}`,
@@ -193,6 +217,8 @@ const registerToolBarEvents = () => {
 				//console.log( data ); // John
 				window.fileName = `${value}`; // save the filename
 				NotyPopup.success(`<strong>Successfully saved file : ${value}</strong>`);
+				// Trigger the event.
+				triggerEvent(document, 'data-refresh-event', {});
 			}, 
 			"json"
 		).fail(( jqXHR, textStatus, errorThrown) => {
@@ -251,7 +277,15 @@ const registerToolBarEvents = () => {
 		}
 	})
 	
+	/*
 	$('.file-item').click((event) => {
+		var fileToLoad = $(event.currentTarget).data('file-name');
+		editor.setValue(`Opening File (${fileToLoad}).... Please Wait`);
+		loadFile(fileToLoad);
+	});
+	*/
+	
+	$(document).on('click', '.file-item', (event) => {
 		var fileToLoad = $(event.currentTarget).data('file-name');
 		editor.setValue(`Opening File (${fileToLoad}).... Please Wait`);
 		loadFile(fileToLoad);

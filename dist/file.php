@@ -44,6 +44,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$result['message'] = 'Parameters missing';
 	}
 	echo json_encode($result);
+} else {
+	// assume method = GET
+	header('Content-Type: application/json');
+	$result = [];
+	$directory = './saved';
+	$result = array_diff(scandir($directory), array('..', '.'));
+	echo json_encode(array_values($result));
 }
-
 ?>

@@ -100,6 +100,7 @@ const NotyPopup = {
 	
 	success : (text) => {
 	  setTimeout( () => {
+	  		//Noty.clearAll();
 			var n = new Noty(options);
 			n.setText(formatText(text), true);
 			n.setType('success', true);
@@ -109,6 +110,7 @@ const NotyPopup = {
 	
 	warning : (text) => {
 		setTimeout( () => {
+			//Noty.clearAll();
 			var n = new Noty(options);
 			n.setText(formatText(text), true);
 			n.setType('warning', true);
@@ -118,14 +120,13 @@ const NotyPopup = {
 	
 	error : (text) => {
 		setTimeout( () => {
+			//Noty.clearAll();
 			var n = new Noty(options);
 			n.setText(formatText(text), true);
 			n.setType('error', true);
 			n.show();
 		}, 100);
-	},
-	
-	
+	}
 };
 
 export default NotyPopup
