@@ -9,7 +9,7 @@ $(() => {
   const editor = require('./editor').default
   require('./init')
   require('./preferences')
-  $.get('template.md', (data) => {
+  $.get('saved/template.md', (data) => {
     editor.setValue(data)
     window.fileName = 'template.md';
     setTimeout(() => {

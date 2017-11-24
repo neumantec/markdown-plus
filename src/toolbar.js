@@ -34,9 +34,12 @@ const promptForValue = (key, action) => {
 const loadFile = (value) => {
 
 	if (value.length > 0) {
-		$.get(`saved/${value}`, (data) => {
+		if(!value.startsWith('saved/')) 
+			value = `saved/${value}`;
+
+		$.get(value, (data) => {
 			editor.setValue(data)
-			window.fileName = `saved/${value}`; // save the filename
+			window.fileName = `${value}`; // save the filename
 			NotyPopup.success(`<strong>Successfully Opened File!</strong><br/> (${value})`);
 		}).fail(() => {
 			
@@ -125,9 +128,9 @@ const registerToolBarEvents = () => {
 	})
 	
 	$('#new-file-icon').click((event) => {
-		$.get(`template.md`, (data) => {
+		$.get(`saved\template.md`, (data) => {
 			editor.setValue(data)
-			window.fileName = `template.md`; // save the filename
+			window.fileName = `saved\template.md`; // save the filename
 			editor.focus();
 			NotyPopup.success(`New File created based on template.md.<br/><br/>Please don't forget to use Save Document As (<i class="fa fa-files-o"></i>) to specify a new file name`);
 		}).fail(() => {
@@ -177,15 +180,18 @@ const registerToolBarEvents = () => {
 	promptForValue('file-save', (value) => {
 		//editor.replaceSelection(`### Trying to save file ${value}:`)
 		
+		if(!value.startsWith('saved/')) 
+			value = `saved/${value}`;
+		
 		$.post( 
 			"file.php",
 			JSON.stringify({
-				'filename' : `saved/${value}`,
+				'filename' : `${value}`,
 				'contents' : editor.getValue()
 			}),
 			( data ) => {
 				//console.log( data ); // John
-				window.fileName = `saved/${value}`; // save the filename
+				window.fileName = `${value}`; // save the filename
 				NotyPopup.success(`<strong>Successfully saved file : ${value}</strong>`);
 			}, 
 			"json"
@@ -200,9 +206,12 @@ const registerToolBarEvents = () => {
 		//editor.replaceSelection(`### Trying to save file ${value}:`)
 		//editor.save()
 		
-		$.get(`saved/${value}`, (data) => {
+		if(!value.startsWith('saved/')) 
+			value = `saved/${value}`;
+		
+		$.get(`${value}`, (data) => {
 			editor.setValue(data)
-			window.fileName = `saved/${value}`; // save the filename
+			window.fileName = `${value}`; // save the filename
 			NotyPopup.success(`<strong>Successfully Opened File!</strong><br/> (${value})`);
 		}).fail(() => {
 			
