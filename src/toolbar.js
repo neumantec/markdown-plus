@@ -40,6 +40,7 @@ const loadFile = (value) => {
 		$.get(value, (data) => {
 			editor.setValue(data)
 			window.fileName = `${value}`; // save the filename
+			document.dispatchEvent(new Event('file-editing-event'));
 			NotyPopup.success(`<strong>Successfully Opened File!</strong><br/> (${value})`);
 		}).fail(() => {
 			
@@ -196,6 +197,7 @@ const registerToolBarEvents = () => {
 			window.fileName = value; // save the filename
 			editor.focus();
 			NotyPopup.success(`New File created based on template.md.`);
+			document.dispatchEvent(new Event('file-editing-event'));
 		}).fail(() => {
 			NotyPopup.error(`<strong>Failed to create a New File!</strong>`);
 		});
@@ -241,6 +243,7 @@ const registerToolBarEvents = () => {
 			editor.setValue(data)
 			window.fileName = `${value}`; // save the filename
 			NotyPopup.success(`<strong>Successfully Opened File!</strong><br/> (${value})`);
+			document.dispatchEvent(new Event('file-editing-event'));
 		}).fail(() => {
 			
 			NotyPopup.error(`<strong>Failed!</strong><br/> File(${value}) does not exist`);

@@ -51,6 +51,17 @@ html, body, .CodeMirror {
   border-width: 1px;
 }
 
+.file-editing {
+  text-align: center;
+  padding: 2px;
+  font-size: 0.6em;
+  font-weight: bold;
+  border-style: outset;
+  border-width: 1px;
+  background-color: #4babf0;
+  color: #090300;
+}
+
 #file-list .file-item {
     padding: 2px;
     border-style: outset;
@@ -58,8 +69,20 @@ html, body, .CodeMirror {
     margin-bottom: 1px;
 }
 
+#file-list .file-item.selected {
+    padding: 2px;
+    border-style: outset;
+    border-width: 1px;
+    margin-bottom: 1px;
+    background-color: #4babf0;
+}
+
 #file-list .file-item .fa {
   font-size: 24px;
+}
+
+#file-list .file-item.selected .fa {
+    color: #fff;
 }
 
 #file-list .file-item .file-name{
@@ -68,6 +91,11 @@ html, body, .CodeMirror {
     background-color: rgb(243, 243, 243);
     margin-top: 5px;
     word-break: break-all;
+}
+
+#file-list .file-item.selected .file-name {
+    color: #111;
+    font-size: 0.8em;
 }
 
 #file-list .file-item:hover, #file-list .icon:hover {

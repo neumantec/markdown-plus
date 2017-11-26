@@ -234,11 +234,11 @@ T3: 2014-01-02, 9d"></i>
       <div class="ui-layout-east">
         <article class="markdown-body" id="preview"></article>
       </div>
-      <div class="ui-layout-west">
+      <div class="ui-layout-west" id="file-list">
         <div class='file-header'>List of Files</div>
         <div class="ui-layout-content">
-          <div id="file-list" class="noselect">
-              <file-entry v-for="file in files" v-bind:file="file"></file-entry>
+          <div class="noselect">
+              <file-entry v-for="file in files" :file="file" :c-file="currFile"></file-entry>
           <?php /* ?>
             <?php 
               $directory = './saved';
@@ -265,10 +265,10 @@ T3: 2014-01-02, 9d"></i>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script>
         Vue.component('file-entry', {
-           props: ['file'],
+           props: ['file', 'cFile'],
            template: `
                <div class="p-all-2">
-                <div class='file-item' :data-file-name="file">
+                <div class='file-item' :data-file-name="file" :class="{selected : (file == cFile)}">
                     <i :title="file" class="fa fa-file"></i>
                     <div class="file-name">{{ file }}</div>
                 </div>
@@ -281,8 +281,9 @@ T3: 2014-01-02, 9d"></i>
                 el : '#file-list',
                 data: function(){
                     return {
-                        files : [],//['a.md', 'b.md', 'c.md'];
-                        endpoint: 'file.php'
+                        files       : [],//['a.md', 'b.md', 'c.md'];
+                        endpoint    : 'file.php',
+                        currFile    : null
                     };
                 },
     			
@@ -299,6 +300,14 @@ T3: 2014-01-02, 9d"></i>
     		            .fail(() => {
                 			NotyPopup.error(`<strong>Failed to load files list!</strong>`);
                 		});
+    		        },
+
+    		        setActiveFile: function() {
+    		            var f = window.fileName; 
+    		            if(f.indexOf('/') !== -1)
+    		                f = f.split('/')[1];
+    		                
+    		            this.currFile = f;
     		        }
     		    }
             });
@@ -306,6 +315,10 @@ T3: 2014-01-02, 9d"></i>
             // Add an event listener.
             document.addEventListener('data-refresh-event', function (e) {
                 filesListApp.fetch();
+            }, false);
+            
+            document.addEventListener('file-editing-event', function (e) {
+                filesListApp.setActiveFile();
             }, false);
         })
         
